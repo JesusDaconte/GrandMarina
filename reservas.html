@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reservas - Grand Marina Suites</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        @font-face { font-family: 'Trajan'; src: url('https://grandmarinasuites.com/wp-content/uploads/2023/04/trajan.ttf') format('truetype'); font-display: swap; }
+        :root {
+            --color-primary: #417783;
+            --color-dark: #1a2e33;
+            --color-accent: #C9A86C;
+            --color-text: #29393C;
+            --color-text-light: #6b8085;
+            --color-bg-alt: #f0f6f7;
+            --color-white: #ffffff;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
+            --shadow-md: 0 8px 30px rgba(0,0,0,0.08);
+            --shadow-lg: 0 20px 60px rgba(0,0,0,0.1);
+            --radius: 12px;
+        }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--color-white);
+            color: var(--color-text);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+        .container { max-width: 1400px; margin: 0 auto; padding: 0 5%; }
+
+        /* ===== NAV ===== */
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+            background: rgba(255,255,255,0.92); backdrop-filter: blur(16px);
+            padding: 1.2rem 5%; display: flex; justify-content: space-between; align-items: center;
+            transition: all 0.4s;
+        }
+        nav.scrolled { padding: 0.7rem 5%; box-shadow: 0 2px 30px rgba(0,0,0,0.08); }
+        .logo { display: flex; align-items: center; text-decoration: none; }
+.logo img { height: 48px; width: auto; transition: height 0.4s; }
+nav.scrolled .logo img { height: 40px; }
+        .nav-links { display: flex; gap: 2.5rem; list-style: none; align-items: center; }
+        .nav-links a {
+            text-decoration: none; color: var(--color-text); font-size: 0.8rem;
+            letter-spacing: 0.1em; text-transform: uppercase; transition: all 0.3s;
+            font-family: 'Poppins', sans-serif; font-weight: 500; position: relative;
+        }
+        .nav-links a::after {
+            content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px;
+            background: var(--color-primary); transition: width 0.3s;
+        }
+        .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
+        .nav-links a:hover { color: var(--color-primary); }
+        .nav-links a.active { color: var(--color-primary); }
+        .nav-cta {
+            background: var(--color-primary) !important; color: white !important;
+            padding: 0.7rem 1.8rem !important; border-radius: 50px !important;
+            transition: all 0.3s !important; letter-spacing: 0.08em !important;
+        }
+        .nav-cta::after { display: none !important; }
+        .nav-cta:hover { background: var(--color-dark) !important; transform: translateY(-1px); box-shadow: 0 4px 15px rgba(65,119,131,0.3); }
+
+        .menu-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; z-index: 1001; }
+        .menu-toggle span { width: 26px; height: 2px; background: var(--color-primary); transition: 0.3s; border-radius: 2px; }
+
+        @media (max-width: 768px) {
+            .menu-toggle { display: flex; }
+            .nav-links {
+                position: fixed; top: 0; right: -100%; width: 80%; max-width: 360px;
+                height: 100vh; background: white; flex-direction: column;
+                justify-content: center; align-items: center; gap: 2rem;
+                transition: right 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+                box-shadow: -10px 0 50px rgba(0,0,0,0.1);
+            }
+            .nav-links.active { right: 0; }
+            .nav-links a { font-size: 1rem; }
+            nav.scrolled { padding: 0.8rem 5%; }
+        }
+
+        /* ===== SECTION BASE ===== */
+        section { padding: 7rem 0; }
+
+        .section-label {
+            font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase;
+            color: var(--color-accent); margin-bottom: 0.5rem; font-weight: 600;
+        }
+        .section-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: clamp(2rem, 4.5vw, 3.2rem); font-weight: 500;
+            color: var(--color-primary); margin-bottom: 1.5rem; line-height: 1.2;
+        }
+        .text-center { text-align: center; }
+
+        /* ===== PAGE HERO ===== */
+        .page-hero {
+            height: 70vh; min-height: 500px; display: flex; align-items: center;
+            justify-content: center; position: relative; overflow: hidden;
+            background: url('./assets/ocean-front.webp') center/cover no-repeat;
+        }
+        .page-hero::after {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.5));
+        }
+        .page-hero-content { position: relative; z-index: 1; text-align: center; color: white; padding: 0 1rem; width: 100%; max-width: 900px; }
+        .page-hero h1 { font-family: 'Trajan', serif; font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 400; line-height: 1.2; margin-bottom: 0.5rem; }
+        .page-hero h1 span { font-weight: 400; display: block; }
+        .page-hero-tag { font-size: 0.75rem; letter-spacing: 0.3em; text-transform: uppercase; margin-bottom: 1rem; opacity: 0.9; }
+
+        /* ===== BUTTONS ===== */
+        .btn {
+            display: inline-block; padding: 1rem 2.8rem; background: white;
+            color: var(--color-primary); text-decoration: none; font-size: 0.8rem;
+            letter-spacing: 0.15em; text-transform: uppercase; border-radius: 50px;
+            transition: all 0.3s; border: none; cursor: pointer; font-weight: 500;
+            font-family: 'Poppins', sans-serif;
+        }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,0,0,0.15); }
+        .btn-primary { background: var(--color-primary); color: white; }
+        .btn-primary:hover { background: var(--color-dark); }
+        .btn-outline { background: transparent; border: 2px solid white; color: white; }
+        .btn-outline:hover { background: white; color: var(--color-primary); }
+        /* ===== RESERVE SECTION ===== */
+        .reserve-section { background: var(--color-white); }
+        .reserve-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; margin-top: 3rem; align-items: start; }
+        @media (max-width: 968px) { .reserve-layout { grid-template-columns: 1fr; } }
+
+        .reserve-form-card { background: var(--color-white); padding: 3.5rem; border-radius: var(--radius); box-shadow: var(--shadow-md); }
+        .form-group { margin-bottom: 1.5rem; display: flex; flex-direction: column; }
+        .form-group label { font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-text-light); margin-bottom: 0.4rem; font-weight: 500; }
+        .form-group input, .form-group select { width: 100%; padding: 0.9rem 1rem; border: 1.5px solid #e2e8ea; background: white; font-family: inherit; font-size: 0.95rem; border-radius: 8px; transition: border-color 0.3s; }
+        .form-group input:focus, .form-group select:focus { outline: none; border-color: var(--color-primary); box-shadow: 0 0 0 3px rgba(65,119,131,0.1); }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+        .form-submit { text-align: center; margin-top: 2rem; }
+
+        .reserve-info-card { background: var(--color-white); padding: 3rem; border-radius: var(--radius); box-shadow: var(--shadow-md); }
+        .reserve-info-card h3 { font-size: 1.5rem; font-weight: 400; margin-bottom: 2rem; color: var(--color-primary); }
+        .info-item { margin-bottom: 1.5rem; padding: 1.5rem; background: white; border-radius: 8px; box-shadow: var(--shadow-sm); }
+        .info-item h4 { font-size: 1.2rem; font-weight: 400; color: var(--color-primary); margin-bottom: 0.8rem; }
+        .info-item p { font-size: 0.95rem; color: var(--color-text-light); line-height: 1.7; }
+
+        /* ===== SUITES ===== */
+        .suites-section { background: var(--color-bg-alt); }
+        .suites-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 3rem; }
+        @media (max-width: 968px) { .suites-grid { grid-template-columns: 1fr; } }
+
+        .suite-card { background: var(--color-white); overflow: hidden; border-radius: var(--radius); transition: all 0.4s; box-shadow: var(--shadow-sm); }
+        .suite-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-md); }
+        .suite-card img { width: 100%; height: 250px; object-fit: cover; display: block; transition: transform 0.6s; aspect-ratio: 16/9; border-radius: var(--radius) var(--radius) 0 0; }
+        .suite-card:hover img { transform: scale(1.05); }
+        .suite-card-content { padding: 1.5rem; }
+        .suite-card .suite-size { font-size: 0.8rem; color: var(--color-accent); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 1rem; }
+        .suite-card h3 { font-size: 1.3rem; font-weight: 400; color: var(--color-primary); margin-bottom: 0.3rem; }
+        .suite-card ul { list-style: none; margin-bottom: 1.5rem; }
+        .suite-card li { font-size: 0.9rem; color: var(--color-text-light); padding: 0.4rem 0; border-bottom: 1px solid rgba(0,0,0,0.05); }
+        .suite-card li:last-child { border-bottom: none; }
+        .suite-card .btn { font-size: 0.7rem; padding: 0.7rem 1.5rem; }
+
+        /* ===== TESTIMONIALS ===== */
+        .testimonials { background: var(--color-bg-alt); text-align: center; }
+        .testimonials-placeholder { margin-top: 2rem; padding: 4rem; border: 2px dashed var(--color-primary); border-radius: var(--radius); max-width: 600px; margin-left: auto; margin-right: auto; }
+        .testimonials-placeholder p { font-size: 1.2rem; color: var(--color-text-light); font-style: italic; }
+        .testimonials-placeholder .rating { margin-top: 1rem; font-size: 2rem; color: var(--color-accent); }
+
+        /* ===== FOOTER ===== */
+        footer { background: #121f22; color: white; padding: 5rem 0 2rem; }
+        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1.5fr; gap: 3rem; margin-bottom: 3rem; }
+        @media (max-width: 968px) { .footer-grid { grid-template-columns: 1fr; gap: 2rem; } }
+        .footer-brand h3 { font-size: 1.3rem; font-weight: 600; margin-bottom: 0.3rem; }
+        .footer-brand span { font-weight: 300; }
+        .footer-brand p { font-size: 0.9rem; color: rgba(255,255,255,0.5); margin-top: 1rem; line-height: 1.8; }
+        .footer-col h4 { font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 1.2rem; color: var(--color-accent); font-weight: 500; }
+        .footer-col p, .footer-col a { font-size: 0.9rem; color: rgba(255,255,255,0.5); line-height: 2; text-decoration: none; display: block; transition: color 0.3s; }
+        .footer-col a:hover { color: white; }
+        .social-links { display: flex; gap: 0.8rem; }
+        .social-links a { display: flex; align-items: center; justify-content: center; width: 42px; height: 42px; border: 1px solid rgba(255,255,255,0.15); border-radius: 50%; font-size: 0.8rem; transition: all 0.3s; }
+        .social-links a:hover { background: var(--color-primary); border-color: var(--color-primary); }
+        .footer-bottom { border-top: 1px solid rgba(255,255,255,0.06); padding-top: 2rem; text-align: center; font-size: 0.8rem; color: rgba(255,255,255,0.3); }
+
+        /* ===== SCROLL REVEAL ===== */
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.7s cubic-bezier(0.22, 1, 0.36, 1); }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="index.html" class="logo"><img src="./assets/logo-grand-marina.webp" alt="Grand Marina Suites"></a>
+    <ul class="nav-links" id="navLinks">
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="nosotros.html">Nosotros</a></li>
+        <li><a href="galeria.html">Galería</a></li>
+        <li><a href="apartamentos.html">Apartamentos</a></li>
+        <li><a href="contacto.html">Contacto</a></li>
+        <li><a href="reservas.html" class="nav-cta active">Reservar</a></li>
+    </ul>
+    <div class="menu-toggle" id="menuToggle"><span></span><span></span><span></span></div>
+</nav>
+
+<section class="page-hero">
+    <div class="page-hero-content">
+        <p class="page-hero-tag">Grand Marina Suites</p>
+        <h1>Reserva tu<br><span>estadía soñada</span></h1>
+        <p style="font-size: 1.1rem; opacity: 0.9; max-width: 500px; margin: 1rem auto;">Comienza tus vacaciones soñadas en Santa Marta. Reserva ahora y vive una experiencia inolvidable.</p>
+    </div>
+</section>
+
+<section class="reserve-section">
+    <div class="container">
+        <div class="reserve-layout">
+            <div class="reserve-form-card">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Check-in</label>
+                        <input type="date" id="resCheckin" class="date-input">
+                    </div>
+                    <div class="form-group">
+                        <label>Check-out</label>
+                        <input type="date" id="resCheckout" class="date-input">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Adultos</label>
+                        <select id="resAdults">
+                            <option value="1">1</option>
+                            <option value="2" selected>2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Niños</label>
+                        <select id="resChildren">
+                            <option value="0" selected>0</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Tipo de suite</label>
+                    <select id="resSuite">
+                        <option value="">Seleccionar suite</option>
+                        <option value="ocean-front">Ocean Front Suite (2 hab / 120 m²)</option>
+                        <option value="ocean-junior">Ocean Front Junior (2 hab / 108 m²)</option>
+                        <option value="ocean-side">Ocean Side View (1 hab / 70 m²)</option>
+                    </select>
+                </div>
+                <div class="form-submit">
+                    <button type="button" class="btn btn-primary" onclick="redirectCloudBeds('resCheckin','resCheckout')">Consultar disponibilidad</button>
+                </div>
+            </div>
+            <div class="reserve-info-card">
+                <h3>Información útil</h3>
+                <div class="info-item">
+                    <h4>Check-in / Check-out</h4>
+                    <p>Check-in a partir de las 15:00 hrs · Check-out hasta las 11:00 hrs</p>
+                </div>
+                <div class="info-item">
+                    <h4>Políticas</h4>
+                    <p>Precios en USD. No incluye impuestos ni seguro de viaje. Se requiere depósito de garantía.</p>
+                </div>
+                <div class="info-item">
+                    <h4>Cancelaciones</h4>
+                    <p>Cancelación gratuita hasta 7 días antes del check-in. Consulte términos y condiciones.</p>
+                </div>
+                <div class="info-item">
+                    <h4>¿Necesitas ayuda?</h4>
+                    <p>Contáctanos vía WhatsApp o llámanos al <a href="tel:+573022258716" style="color: var(--color-accent); text-decoration: none;">+57 302 225 8716</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="suites-section">
+    <div class="container">
+        <div class="text-center">
+            <p class="section-label">— Nuestras Suites</p>
+            <h2 class="section-title">Elige la suite perfecta para ti</h2>
+            <p style="font-size: 1.1rem; color: var(--color-text-light);">Un paraíso en la bahía más linda de América: Santa Marta</p>
+        </div>
+        <div class="suites-grid">
+            <div class="suite-card">
+                <img src="./assets/ocean-front.webp" alt="Ocean Front Suite">
+                <div class="suite-card-content">
+                    <p class="suite-size">Ocean Front</p>
+                    <h3>Ocean Front Suite</h3>
+                    <ul>
+                        <li>2 Habitaciones</li>
+                        <li>120 Mts2</li>
+                        <li>Amenities</li>
+                        <li>Caja de seguridad</li>
+                    </ul>
+                    <a href="https://api.whatsapp.com/send?phone=573022258716" class="btn btn-primary" target="_blank">Reservar</a>
+                </div>
+            </div>
+            <div class="suite-card">
+                <img src="./assets/ocean-junior.webp" alt="Ocean Front Junior">
+                <div class="suite-card-content">
+                    <p class="suite-size">Ocean Front Junior</p>
+                    <h3>Ocean Front Junior</h3>
+                    <ul>
+                        <li>2 Habitaciones</li>
+                        <li>108 Mts2</li>
+                        <li>Amenities</li>
+                        <li>Caja de seguridad</li>
+                    </ul>
+                    <a href="https://api.whatsapp.com/send?phone=573022258716" class="btn btn-primary" target="_blank">Reservar</a>
+                </div>
+            </div>
+            <div class="suite-card">
+                <img src="./assets/ocean-side.webp" alt="Ocean Side View">
+                <div class="suite-card-content">
+                    <p class="suite-size">Ocean Side View</p>
+                    <h3>Ocean Side View</h3>
+                    <ul>
+                        <li>1 Habitación</li>
+                        <li>70 Mts2</li>
+                        <li>Amenities</li>
+                        <li>Caja de seguridad</li>
+                    </ul>
+                    <a href="https://api.whatsapp.com/send?phone=573022258716" class="btn btn-primary" target="_blank">Reservar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="testimonials">
+    <div class="container">
+        <div class="text-center">
+            <p class="section-label">— Testimonios</p>
+            <h2 class="section-title">Reviews huéspedes GMS</h2>
+        </div>
+        <div class="testimonials-placeholder">
+            <p>"Son nuestros felices huéspedes el resultado del compromiso de nuestro servicio y atención para una estadía inolvidable."</p>
+            <div class="rating">★★★★★</div>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <div class="container">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <h3>Grand Marina<span>Suites</span></h3>
+                <p>Apartasuites frente al mar en Santa Marta, Colombia. Una experiencia íntima entre la marina, la Sierra Nevada y el Caribe.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Menú</h4>
+                <a href="index.html">Inicio</a>
+                <a href="nosotros.html">Nosotros</a>
+                <a href="galeria.html">Galería</a>
+                <a href="apartamentos.html">Apartamentos</a>
+                <a href="contacto.html">Contacto</a>
+                <a href="reservas.html">Reservas</a>
+            </div>
+            <div class="footer-col">
+                <h4>Contacto</h4>
+                <p>Marina Internacional</p>
+                <p>Santa Marta, Colombia</p>
+                <p>+57 302 225 8716</p>
+                <p>reservas@grandmarinasuites.com</p>
+            </div>
+            <div class="footer-col">
+                <h4>Newsletter</h4>
+                <p style="font-size:0.85rem;color:rgba(255,255,255,0.6);margin-bottom:0.8rem;">Recibe descuentos, noticias, planes y todo lo que necesitas saber.</p>
+                <form onsubmit="alert('Gracias por suscribirte');return false" style="display:flex;gap:0.5rem;">
+                    <input type="email" placeholder="Email" required style="flex:1;padding:0.6rem;border:none;font-family:inherit;font-size:0.85rem;">
+                    <button type="submit" style="padding:0.6rem 1rem;background:var(--color-accent);color:white;border:none;cursor:pointer;font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;">OK</button>
+                </form>
+                <div style="margin-top:1.5rem;">
+                    <h4 style="margin-bottom:0.8rem;">Síguenos</h4>
+                    <div class="social-links">
+                        <a href="https://www.instagram.com/suitesgrandmarina/" target="_blank">IG</a>
+                        <a href="https://www.facebook.com/Grandmarinasuites" target="_blank">FB</a>
+                        <a href="https://api.whatsapp.com/send?phone=573022258716" target="_blank">WA</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 Grand Marina Suites · Santa Marta · Colombia</p>
+        </div>
+    </div>
+</footer>
+
+<script>
+    const menuToggle = document.getElementById('menuToggle');
+    const navLinks = document.getElementById('navLinks');
+    menuToggle.addEventListener('click', () => navLinks.classList.toggle('active'));
+    document.querySelectorAll('.nav-links a').forEach(l => l.addEventListener('click', () => navLinks.classList.remove('active')));
+    window.addEventListener('scroll', () => {
+        document.querySelector('nav').classList.toggle('scrolled', window.scrollY > 100);
+    });
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    const t = new Date().toISOString().split('T')[0];
+    document.querySelectorAll('.date-input').forEach(el => el.min = t);
+    function redirectCloudBeds(checkinId, checkoutId) {
+        const checkin = document.getElementById(checkinId).value;
+        const checkout = document.getElementById(checkoutId).value;
+        if (!checkin || !checkout) {
+            alert('Por favor selecciona las fechas de check-in y check-out.');
+            return;
+        }
+        if (checkin >= checkout) {
+            alert('La fecha de check-out debe ser posterior al check-in.');
+            return;
+        }
+        const base = 'https://us2.cloudbeds.com/es/reservation/4W9t7r/';
+        const params = new URLSearchParams({ currency: 'cop', checkin, checkout });
+        window.open(base + '?' + params.toString(), '_blank');
+    }
+</script>
+</body>
+</html>
